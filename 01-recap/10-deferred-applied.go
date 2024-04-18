@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func main() {
 	q, r, err := divideWrapper(100, 0)
@@ -24,6 +27,9 @@ func divideWrapper(x, y int) (quotient, remainder int, err error) {
 
 // 3rd party api
 func divide(x, y int) (quotient, remainder int) {
+	if y == 0 {
+		panic(errors.New("divisor cannot be 0"))
+	}
 	quotient, remainder = x/y, x%y
 	return
 }
