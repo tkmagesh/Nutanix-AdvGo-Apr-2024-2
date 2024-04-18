@@ -14,6 +14,9 @@ func main(){
 	}
 	fn()
 
+	fn = fn3
+	fn()
+
 	var greeter func(string)
 	greeter = func(userName string){
 		fmt.Printf("Hi %s, Have a nice day!\n", userName)
@@ -41,4 +44,8 @@ func main(){
 	q, r := divide(100,7)
 	fmt.Println(q, r) 
 	
+}
+
+func fn3(){
+	fmt.Println("fn invoked - 3")
 }
