@@ -36,6 +36,12 @@ func main() {
 		fmt.Printf("nos[%d] : %d\n", idx, val)
 	}
 
+	x := []int{10, 20, 30}
+	y := make([]int, len(x))
+	copy(y, x)
+	y[0] = 9999
+	fmt.Println(x, y)
+
 }
 
 func doubleList(list []int) {
