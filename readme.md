@@ -21,3 +21,7 @@
 ## Methodology
 - No powerpoints
 - Code & Discuss
+
+
+## TODO
+- new()
