@@ -69,3 +69,18 @@
 > go tool dist list
 - To cross compile
 > GOOS=[target_os] GOARCH=[target_arch] go build -o [binary_name] .
+
+## Concurrency
+- Supported using goroutines (~4KB)
+- Builtin Scheduler
+- Concurrency support built in the language itself
+    - **go** keyword, **chan**nel data type, **<-** channel operator, **range** construct, **select-case** construct etc
+- API support through standard library
+    - sync package
+    - sync/atomic package
+![image](./images/concurrency-model.png)
+
+### WaitGroup
+- offered through the 'sync' package
+- semaphore based counter
+- capable of blocking the execution of a function until the counter becomes 0
