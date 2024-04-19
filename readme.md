@@ -22,6 +22,38 @@
 - No powerpoints
 - Code & Discuss
 
+## Modules & Packages
+### Module
+- Any code that need to versioned and deployed together
+- Folder with go.mod file
+- go.mod (manifest file)
+    - Name
+        - advisable to have the complete source control path where the code is maintained
+    - go runtime version
+    - dependencies
+- Create a module
+    > go mod init [module_name]
+- Create a build
+    > go build .
 
-## TODO
-- new()
+    > go build -o [binary_name] .
+- Execute a module
+    > go run .
+- To use a 3rd party module
+    > go get [module_name]
+    - downloaded to the module cache ($GOPATH$/pkg/mod/...)
+- To sync the dependency references in the go.mod file
+    > go mod tidy
+- To compile & use a 3rd party module as a CLI
+    > go install [module_name]
+- To download the dependencies documented in the go.mod file
+    > go mod download
+- To localize the dependencies
+    > go mod vendor
+
+
+### Package
+- Internal organization of code in a module
+- Typically a folder
+- Code can be scattered across multiple files in a package folder, but they all will be indentified by package name (NOT the filename)
+- Public entities should be named starting with an uppercase
