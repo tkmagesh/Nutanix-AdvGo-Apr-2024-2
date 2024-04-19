@@ -107,3 +107,8 @@ ex:
     ```
         data := <- ch
     ```
+- Channel Behaviors
+    - A 'RECEIVE' operation is a blocking operation unless a 'SEND' operation is already initiated
+    - A 'SEND' operation is a blocking operation unless a 'RECEIVE' operation is already initiated
+
+![image](./images/channel-behaviors.png)
