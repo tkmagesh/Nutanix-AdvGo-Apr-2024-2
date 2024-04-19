@@ -5,8 +5,20 @@ import (
 	"sync"
 )
 
-var counter int
-var mutex sync.Mutex
+type Counter struct {
+	count int
+	sync.Mutex
+}
+
+func (c *Counter) Increment() {
+	c.Lock()
+	{
+		c.count++
+	}
+	c.Unlock()
+}
+
+var counter Counter
 
 func main() {
 	wg := &sync.WaitGroup{}
@@ -16,14 +28,10 @@ func main() {
 		go increment(wg)
 	}
 	wg.Wait()
-	fmt.Println(counter)
+	fmt.Println(counter.count)
 }
 
 func increment(wg *sync.WaitGroup) {
 	defer wg.Done()
-	mutex.Lock()
-	{
-		counter++
-	}
-	mutex.Unlock()
+	counter.Increment()
 }
