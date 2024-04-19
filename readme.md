@@ -84,3 +84,26 @@
 - offered through the 'sync' package
 - semaphore based counter
 - capable of blocking the execution of a function until the counter becomes 0
+
+## Channels
+- Declaration
+```
+var [var_name] chan [data_type]
+ex: 
+    var ch chan int
+```
+- Initialization
+```
+[chan_var] = make(chan [data_type])
+ex:
+    ch = make(chan int)
+```
+- Channel Operator ( <- )
+    - Send Operation
+    ```
+        ch <- [data]
+    ```
+    - Receive Operation
+    ```
+        data := <- ch
+    ```
