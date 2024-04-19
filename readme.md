@@ -50,10 +50,22 @@
     > go mod download
 - To localize the dependencies
     > go mod vendor
+- Other useful commands
+    > go mod graph
 
+    > go mod why [module_name]
+- Reference
+    > https://go.dev/ref/mod
 
 ### Package
 - Internal organization of code in a module
 - Typically a folder
 - Code can be scattered across multiple files in a package folder, but they all will be indentified by package name (NOT the filename)
 - Public entities should be named starting with an uppercase
+
+## Cross Compilation
+- Environment Variables - [GOOS, GOARCH]
+- To get the list of supported platforms
+> go tool dist list
+- To cross compile
+> GOOS=[target_os] GOARCH=[target_arch] go build -o [binary_name] .
