@@ -112,3 +112,10 @@ ex:
     - A 'SEND' operation is a blocking operation unless a 'RECEIVE' operation is already initiated
 
 ![image](./images/channel-behaviors.png)
+
+## Context
+- Use for cancel propagation across hierarchy of goroutines
+- context.Background() 
+- context.WithCancel()
+- context.WithTimeout()
+- context.WithValue()
