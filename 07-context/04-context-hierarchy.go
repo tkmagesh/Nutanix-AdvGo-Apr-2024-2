@@ -20,7 +20,6 @@ func main() {
 func genData(ctx context.Context) <-chan string {
 	wg := &sync.WaitGroup{}
 	dataCh := make(chan string)
-
 	go func() {
 		cancelCtx, cancel := context.WithCancel(ctx)
 		fmt.Println("Hit ENTER to stop generating fib series....")
