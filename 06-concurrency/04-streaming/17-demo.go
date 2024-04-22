@@ -15,14 +15,28 @@ import (
 )
 
 func main() {
-	ch := make(chan int)
+	ch := make(chan string)
 	wg := &sync.WaitGroup{}
 
-	wg.Add(1)
-	go genFib(ch, wg)
+	go func(ch chan string) {
+		fibCh := make(chan int)
+		wg.Add(1)
+		go genFib(fibCh, wg)
+		defer wg.Done()
+		for fibNo := range fibCh {
+			ch <- fmt.Sprintf("fib : %d", fibNo)
+		}
+	}(ch)
 
-	wg.Add(1)
-	go genOdd(ch, wg)
+	go func(ch chan string) {
+		oddCh := make(chan int)
+		wg.Add(1)
+		go genOdd(oddCh, wg)
+		defer wg.Done()
+		for oddNo := range oddCh {
+			ch <- fmt.Sprintf("oddNo : %d", oddNo)
+		}
+	}(ch)
 
 	go func() {
 		wg.Wait()
