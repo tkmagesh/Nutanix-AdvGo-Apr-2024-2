@@ -9,6 +9,9 @@ import (
 	"net"
 	"time"
 
+	"net/http"
+	_ "net/http/pprof"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -143,6 +146,11 @@ func (asi *AppService) Greet(serverStream proto.AppService_GreetServer) error {
 }
 
 func main() {
+	// for profiling
+	go func() {
+		http.ListenAndServe("localhost:6000", nil)
+	}()
+
 	appService := NewAppService()
 	listener, err := net.Listen("tcp", ":50051")
 	if err != nil {

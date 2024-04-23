@@ -2,6 +2,7 @@
 
 ## Magesh Kuppan
 - https://linkedin.com/in/tkmagesh
+- tkmagesh77@gmail.com
 
 ## Schedule
 - Commence      : 9:00 AM
@@ -154,3 +155,19 @@ ex:
     2. Go plugins (installed in the GOPATH/bin folder)
         go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+
+## Testing
+- gotest tool (https://github.com/rakyll/gotest)
+- To generate mock objects (https://vektra.github.io/mockery/latest/)
+
+### To generate mocks
+- mockery --all
+
+## Benchmarking
+> go test -run=^$ -bench ^Benchmark_Is_Prime$ performance-app/utils -cpu 1,2,4,8 
+
+## Profiling
+> go test -run=^$ -bench ^Benchmark_Is_Prime$ performance-app/utils -cpu 1,2,4,8 -cpuprofile cpu.prof -memprofile mem.prof
+> go tool pprof cpu.prof
+
+https://paulborile.medium.com/profiling-a-golang-rest-api-server-635fa0ed45f3

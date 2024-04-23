@@ -24,11 +24,13 @@ func main() {
 	appServiceClient := proto.NewAppServiceClient(clientConn)
 	ctx := context.Background()
 
-	// doRequestResponse(ctx, appServiceClient)
+	for {
+		doRequestResponse(ctx, appServiceClient)
+	}
 	// doServerStreaming(ctx, appServiceClient)
 	// doClientStreaming(ctx, appServiceClient)
 	// doServerStreamingWithCancellation(ctx, appServiceClient)
-	doBiDiStreaming(ctx, appServiceClient)
+	// doBiDiStreaming(ctx, appServiceClient)
 }
 
 func doRequestResponse(ctx context.Context, appServiceClient proto.AppServiceClient) {
