@@ -2,9 +2,11 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"grpc-app/proto"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -25,6 +27,33 @@ func (appService *AppService) Add(ctx context.Context, req *proto.AddRequest) (*
 		Result: result,
 	}
 	return res, nil
+}
+
+func (appService *AppService) GeneratePrimes(req *proto.PrimeRequest, serverStream proto.AppService_GeneratePrimesServer) error {
+	start := req.GetStart()
+	end := req.GetEnd()
+	fmt.Printf("Generating primes start : %d and end : %d\n", start, end)
+	for no := start; no <= end; no++ {
+		if isPrime(no) {
+			res := &proto.PrimeResponse{
+				PrimeNo: no,
+			}
+			if err := serverStream.Send(res); err != nil {
+				log.Fatalln(err)
+			}
+			time.Sleep(400 * time.Millisecond)
+		}
+	}
+	return nil
+}
+
+func isPrime(no int64) bool {
+	for i := int64(2); i <= (no / 2); i++ {
+		if no%i == 0 {
+			return false
+		}
+	}
+	return true
 }
 
 func main() {
