@@ -56,6 +56,7 @@ func (appServer *AppServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // application
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(5 * time.Second)
 	fmt.Fprintln(w, "Hello World!")
 }
 
@@ -103,6 +104,10 @@ func timeout(d time.Duration) MiddlewareFunc {
 	return func(handler http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			timeoutCtx, cancel := context.WithTimeout(r.Context(), d)
+			go func() {
+				<-timeoutCtx.Done()
+				fmt.Fprintln(w, "timeout occurred", http.StatusRequestTimeout)
+			}()
 			defer cancel()
 			handler(w, r.WithContext(timeoutCtx))
 			if err := timeoutCtx.Err(); err != nil {
