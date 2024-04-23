@@ -23,16 +23,18 @@ func main() {
 	oddSumCh := Sum(oddCh)
 	evenSumCh := Sum(evenCh)
 
-	Merger(oddSumCh, evenSumCh)
+	done := Merger(oddSumCh, evenSumCh)
 
 	fileWg.Wait()
 	close(dataCh)
+
+	<-done
 	fmt.Println("Done")
 }
 
 func Source(wg *sync.WaitGroup, fileName string, ch chan<- int) {
 	defer wg.Done()
-	file, err := os.Open("data1.dat")
+	file, err := os.Open(fileName)
 	defer file.Close()
 	if err != nil {
 		log.Fatalln(err)
@@ -67,28 +69,36 @@ func Splitter(dataCh <-chan int) (<-chan int, <-chan int) {
 func Sum(ch <-chan int) <-chan int {
 	sumCh := make(chan int)
 	go func() {
-		// defer close(sumCh)
+		defer close(sumCh)
 		var result int
 		for val := range ch {
 			result += val
 		}
+		fmt.Println("result :", result)
 		sumCh <- result
 	}()
 	return sumCh
 }
 
-func Merger(oddSumCh, evenSumCh <-chan int) {
-	file, err := os.OpenFile("result.txt", os.O_CREATE, os.ModePerm)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer file.Close()
-	for i := 0; i < 2; i++ {
-		select {
-		case evenSum := <-evenSumCh:
-			fmt.Fprintf(file, "Even Total : %d\n", evenSum)
-		case oddSum := <-oddSumCh:
-			fmt.Fprintf(file, "Odd Total : %d\n", oddSum)
+func Merger(oddSumCh, evenSumCh <-chan int) <-chan struct{} {
+	doneCh := make(chan struct{})
+	go func() {
+		file, err := os.OpenFile("result.txt", os.O_RDWR|os.O_CREATE, os.ModePerm)
+		if err != nil {
+			log.Fatalln(err)
 		}
-	}
+		defer file.Close()
+		for i := 0; i < 2; i++ {
+			select {
+			case evenSum := <-evenSumCh:
+				fmt.Printf("Even Total : %d\n", evenSum)
+				fmt.Fprintf(file, "Even Total : %d\n", evenSum)
+			case oddSum := <-oddSumCh:
+				fmt.Printf("Odd Total : %d\n", oddSum)
+				fmt.Fprintf(file, "Odd Total : %d\n", oddSum)
+			}
+		}
+		close(doneCh)
+	}()
+	return doneCh
 }
